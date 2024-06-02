@@ -1,0 +1,31 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "goldhen" ]
+  pull_request:
+    branches: [ "goldhen" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build stage 1
+      run: make -C stage1 FW=900 clean && make -C stage1 FW=900
+    
+    - name: Build stage 2
+      run: make -C stage2 FW=900 clean && make -C stage1 FW=900
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: stage1_900.bin
+        path: stage1/stage1.bin
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: stage2_900.bin
+        path: stage2/stage2.bin
