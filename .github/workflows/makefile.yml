@@ -8,6 +8,9 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        version: [700, 701, 702, 750, 751, 755, 800, 801, 803, 850, 852, 900, 903, 904, 950, 951, 960, 1000, 1001, 1050, 1070, 1071, 1100]
 
     runs-on: ubuntu-latest
 
@@ -17,18 +20,17 @@ jobs:
         submodules: recursive
 
     - name: Build stage 1
-      run: |
-        make -C stage1 FW=900 clean && make -C stage1 FW=900
+      run: make -C stage1 FW=${{ matrix.version }} clean && make -C stage1 FW=${{ matrix.version }}
     
     - name: Build stage 2
-      run: make -C stage2 FW=900 clean && make -C stage2 FW=900
+      run: make -C stage2 FW=${{ matrix.version }} clean && make -C stage2 FW=${{ matrix.version }}
 
     - uses: actions/upload-artifact@v4
       with:
-        name: stage1_900.bin
+        name: stage1-${{ matrix.version }}.bin
         path: stage1/stage1.bin
 
     - uses: actions/upload-artifact@v4
       with:
-        name: stage2_900.bin
+        name: stage2-${{ matrix.version }}.bin
         path: stage2/stage2.bin
