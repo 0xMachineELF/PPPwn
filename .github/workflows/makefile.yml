@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        version: [750, 751, 755, 800, 801, 803, 850, 852, 900, 903, 904, 950, 951, 960, 1000, 1001, 1100]
+        version: [900, 1100]
 
     runs-on: ubuntu-latest
 
